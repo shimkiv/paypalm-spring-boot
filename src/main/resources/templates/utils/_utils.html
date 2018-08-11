@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<!--/*@thymesVar id="currency" type="java.util.Currency"*/-->
+<!--/*@thymesVar id="user" type="com.shimkiv.paypalm.model.dto.user.User"*/-->
+<!--/*@thymesVar id="accountSettingsForm" type="com.shimkiv.paypalm.model.vo.form.AccountSettingsForm"*/-->
+
+<div th:fragment="account-header(name)">
+    <h3 style="float: left;" th:text="${name}"></h3>
+    <h3 style="float: right;"><th:block th:text="#{currency.label}" />&nbsp;<th:block th:text="${currency}" /></h3>
+</div>
+
+<th:block th:fragment="account-list-summary(totalSelectedLabel, totalSelectedCount, totalAmount)">
+    <div>
+        <p style="float: left;"><th:block th:text="${totalSelectedLabel}" />&nbsp;<th:block th:text="${totalSelectedCount}" /></p>
+        <p style="float: right;"><th:block th:text="#{total.amount.label}" />&nbsp;<th:block th:text="${currency.symbol}" /><th:block th:text="${#numbers.formatDecimal(totalAmount, 1, currency.defaultFractionDigits)}" /></p>
+    </div>
+    <br />
+</th:block>
+
+<th:block th:fragment="account-empty-list(description)">
+    <br />
+    <br />
+    <br />
+    <div class="centered-text">
+        <h4 style="padding-bottom: 20px;" th:text="${description}"></h4>
+    </div>
+</th:block>
+
+<th:block th:fragment="account-return-back">
+    <hr />
+    <button id="returnBack" class="btn btn-default btn-lg btn-block btn-raised" type="button" th:text="#{return.back.button.label}"></button>
+</th:block>
+
+<div class="list-group" th:fragment="navigation">
+    <div class="list-group-item" style="overflow: visible;">
+        <div class="row-action-primary">
+            <i class="material-icons"><img th:src="@{/images/logo/facepalm1.png}" src="" style="height: 50px; width: 50px; background: none;" /></i>
+        </div>
+
+        <div class="row-content">
+            <div class="least-content">
+                <div class="btn-group" style="overflow: visible;">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <th:block th:text="#{account.label}" /> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" data-toggle="modal" data-target="#settings-dialog" th:text="#{settings.label}"></a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a th:href="@{/logout}" th:text="#{log.out.label}"></a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4 class="list-group-item-heading" th:text="#{welcome.back.label}"></h4>
+            <p class="list-group-item-text">
+                <i>
+                    <th:block th:if="${user != null && user.userSettings != null}">
+                        <th:block th:if="${not #strings.isEmpty(#strings.trim(user.userSettings.firstName)) && not #strings.isEmpty(#strings.trim(user.userSettings.lastName))}">
+                            <th:block th:text="${user.userSettings.firstName}" />&nbsp;<th:block th:text="${user.userSettings.lastName}" />
+                        </th:block>
+                        <th:block th:if="${#strings.isEmpty(#strings.trim(user.userSettings.firstName)) || #strings.isEmpty(#strings.trim(user.userSettings.lastName))}">
+                            <th:block th:text="${user.name}" />
+                        </th:block>
+                    </th:block>
+                </i>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div id="settings-dialog" class="modal fade" tabindex="-1" th:fragment="settings-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" th:text="#{settings.label}"></h4>
+            </div>
+            <form name="settingsForm" th:action="${#mvc.url('AC#processAccountUpdate').build()}" th:object="${accountSettingsForm}" method="POST">
+                <div class="modal-body">
+                    <div class="form-group label-floating">
+                        <label class="control-label" for="firstName" th:text="#{settings.form.user.first.name.label}"></label>
+                        <input type="text" id="firstName" name="firstName" class="form-control" th:value="${user.userSettings.firstName}" autofocus />
+                        <p class="help-block" th:text="#{settings.form.user.first.name.help.label}"></p>
+                    </div>
+                    <div class="form-group label-floating">
+                        <label class="control-label" for="lastName" th:text="#{settings.form.user.last.name.label}"></label>
+                        <input type="text" id="lastName" name="lastName" class="form-control" th:value="${user.userSettings.lastName}" />
+                        <p class="help-block" th:text="#{settings.form.user.last.name.help.label}"></p>
+                    </div>
+                    <div class="form-group label-floating">
+                        <label class="control-label" for="email" th:text="#{settings.form.user.email.label}"></label>
+                        <input type="email" id="email" name="email" class="form-control" th:value="${user.userSettings.email}" />
+                        <p class="help-block" th:text="#{settings.form.user.email.help.label}"></p>
+                    </div>
+                    <div class="form-group label-floating">
+                        <label class="control-label" for="paypalClientId" th:text="#{settings.form.pay.pal.client.id.label}"></label>
+                        <input type="text" id="paypalClientId" name="paypalClientId" class="form-control" th:value="${user.userSettings.paypalClientId}" />
+                        <p class="help-block" th:text="#{settings.form.pay.pal.client.id.help.label}"></p>
+                    </div>
+                    <div class="form-group label-floating">
+                        <label class="control-label" for="paypalSecret" th:text="#{settings.form.pay.pal.secret.phrase.label}"></label>
+                        <input type="text" id="paypalSecret" name="paypalSecret" class="form-control" th:value="${user.userSettings.paypalSecret}" />
+                        <p class="help-block" th:text="#{settings.form.pay.pal.secret.phrase.help.label}"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" th:text="#{save.button.label}"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="payment-processing-dialog" class="modal fade" tabindex="-1" th:fragment="payment-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" th:text="#{payment.processing.label}"></h4>
+            </div>
+            <div class="modal-body">
+                <div id="paymentProcessingInfo"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="paymentProcessingDialogCloseButton" type="button" class="btn btn-primary" th:text="#{close.button.label}"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

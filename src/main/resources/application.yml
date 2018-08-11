@@ -1,0 +1,138 @@
+paypalm:
+  security:
+    bcrypt-strength: 10
+    cipher-key: 0123456789abcdef
+    cipher-salt: abcdef
+  cache:
+    eviction-policy-duration-time-unit: MINUTES
+    eviction-policy-duration-amount: 60
+  scheduler-thread-pool:
+    size: 10
+    name-prefix: TaskScheduler-
+  paypal:
+    api-url: https://api.sandbox.paypal.com/v1
+info:
+  app:
+    encoding: @project.build.sourceEncoding@
+    java.version: @java.version@
+  paypalm:
+    slogan: @paypalm.slogan@
+    copyright: Copyright © @project.inceptionYear@ – @current.year@ @project.organization.name@. All rights reserved.
+spring:
+  profiles:
+    active: dev
+  application:
+    name: @project.name@
+  cache:
+    jcache:
+      config: classpath:cache/ehcache.xml
+  output:
+    ansi:
+      enabled: detect
+  flyway:
+    locations:
+    - classpath:db/migration/{vendor}
+  main:
+    banner-mode: log
+  datasource:
+    url: jdbc:h2:mem:paypalm;MODE=MySQL
+    username: sa
+    password:
+    hikari:
+      maximum-pool-size: 40
+  jpa:
+    open-in-view: true
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+  jackson:
+    serialization:
+      indent_output: true
+      write-dates-as-timestamps: false
+  mvc:
+    favicon:
+      enabled: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 0
+      max-file-size: 10MB
+      max-request-size: 15MB
+  resources:
+    chain:
+      enabled: true
+      cache: true
+      html-application-cache: true
+      strategy:
+        content:
+          enabled: true
+          paths: /**
+logging:
+  file:
+    max-history: 10
+    max-size: 10MB
+  level:
+    root: info
+    com.shimkiv: debug
+logging.file: logs/@project.artifactId@.log
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include:
+        - health
+        - info
+        - prometheus
+  endpoint:
+    info:
+      enabled: true
+    prometheus:
+      enabled: true
+    health:
+      enabled: true
+      roles:
+      - ROLE_ADMIN
+      show-details: when_authorized
+  metrics:
+    distribution:
+      percentiles:
+        http.server.requests: 0.95, 0.99
+      percentiles-histogram:
+        http.server.requests: true
+      sla:
+        http.server.requests: 10ms, 100ms
+    web:
+      server:
+        auto-time-requests: true
+  info:
+    git:
+      enabled: true
+      mode: full
+server:
+  compression:
+    enabled: true
+  http2:
+    enabled: true
+  error:
+    include-stacktrace: never
+    include-exception: false
+  tomcat:
+    remote-ip-header: x-forwarded-for
+    protocol-header: x-forwarded-proto
+  ajp:
+    port: 8009
+    protocol: AJP/1.3
+
+---
+
+spring:
+  profiles: dev
+  h2:
+    console:
+      enabled: true
+      path: /h2
+      settings:
+        web-allow-others: true
+logging:
+  level:
+    root: info

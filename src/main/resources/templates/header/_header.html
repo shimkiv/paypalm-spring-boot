@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="html-header(title)">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,maximum-scale=1.0" />
+    <meta name="description" th:content="#{paypalm.description}" />
+    <meta name="author" th:content="#{app.authors}" />
+    <meta name="theme-color" content="#e5e3dc" />
+
+    <title th:text="${title}"></title>
+
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap-material-design/bootstrap-material-design.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/ripples/ripples.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/app.css}" />
+
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/favicon.ico}" />
+</head>
+<body>
+</body>
+</html>

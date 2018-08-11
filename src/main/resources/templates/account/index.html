@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{header/_header :: html-header(title=${#messages.msg('app.sub.page.title', #messages.msg('paypalm.title'), #strings.capitalize(#messages.msg('account.label')))})}">
+</head>
+<body>
+<!--/*@thymesVar id="currency" type="java.util.Currency"*/-->
+<!--/*@thymesVar id="productList" type="java.util.List<com.shimkiv.paypalm.model.dto.product.Product>"*/-->
+<!--/*@thymesVar id="shoppingCart" type="com.shimkiv.paypalm.model.cart.ShoppingCart"*/-->
+
+<div class="container">
+    <div th:replace="~{utils/_utils :: navigation}"></div>
+
+    <div class="well infobox content-container table-responsive">
+        <div th:replace="~{utils/_utils :: account-header(name=#{products.label})}"></div>
+
+        <th:block th:if="${not #lists.isEmpty(productList)}">
+            <form id="productEntityListForm" name="productEntityListForm" th:action="@{/account/checkout}" method="POST">
+                <table class="table table-striped table-hover ">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th th:text="#{product.form.product.name.label}"></th>
+                        <th th:text="#{product.form.product.price.label}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="product : ${productList}">
+                        <td>
+                            <div class="checkbox" th:title="#{product.form.checkbox.action.label}">
+                                <label>
+                                    <input th:title="#{product.form.checkbox.action.label}" type="checkbox" th:name="${@commonUtils.generateUniqueRef(product.id)}" th:value="${@commonUtils.generateUniqueRef(product.id)}" th:checked="${shoppingCart.contains(product)}" />
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <a th:href="@{/account/statistics/(productId = ${@commonUtils.generateUniqueRef(product.id)})}" th:title="#{product.form.statistics.link.label}" target="_self" th:text="${product.name}"></a>
+                        </td>
+                        <td>
+                            <th:block th:text="${currency.symbol}" /> <th:block th:text="${#numbers.formatDecimal(product.price, 1, currency.defaultFractionDigits)}" />
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div th:replace="~{utils/_utils :: account-list-summary(totalSelectedLabel=#{total.selected.products.label}, totalSelectedCount=${shoppingCart.size()}, totalAmount=${shoppingCart.totalAmount})}"></div>
+
+                <br />
+                <button class="btn btn-primary btn-lg btn-block btn-raised" type="submit" th:disabled="${#lists.isEmpty(shoppingCart.products)}" th:text="#{proceed.to.checkout.button.label}"></button>
+                <hr />
+                <button id="clearShoppingCartButton" class="btn btn-default btn-lg btn-block btn-raised" type="button" th:disabled="${#lists.isEmpty(shoppingCart.products)}" th:text="#{clear.shopping.cart.button.label}"></button>
+            </form>
+        </th:block>
+
+        <th:block th:if="${#lists.isEmpty(productList)}">
+            <div th:replace="~{utils/_utils :: account-empty-list(description=#{product.form.no.products.label})}"></div>
+        </th:block>
+    </div>
+</div>
+
+<div th:replace="~{utils/_utils :: settings-dialog}"></div>
+
+<div th:replace="~{footer/_footer :: footer(isError=false, isPrivate=true)}"></div>
+
+</body>
+</html>

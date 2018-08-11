@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{header/_header :: html-header(title=${#messages.msg('app.sub.page.title', #messages.msg('paypalm.title'), #strings.capitalize(#messages.msg('error')))})}">
+</head>
+<body>
+
+<div class="container">
+    <div class="row text-center well infobox content-container table-responsive">
+        <h2 th:text="#{error.occurred}"></h2>
+        <br />
+
+        <table align="center" class="table table-striped table-hover">
+            <!--/*@thymesVar id="timestamp" type="java.lang.String"*/-->
+            <tr>
+                <td class="table-col-name" th:text="#{date}"></td>
+                <td class="table-col-value" th:text="${timestamp}"></td>
+            </tr>
+            <!--/*@thymesVar id="path" type="java.lang.String"*/-->
+            <tr>
+                <td class="table-col-name" th:text="#{path}"></td>
+                <td class="table-col-value" th:text="${path}"></td>
+            </tr>
+            <!--/*@thymesVar id="error" type="java.lang.String"*/-->
+            <tr>
+                <td class="table-col-name"><th:block th:text="${#strings.capitalize(#messages.msg('error'))}" />:</td>
+                <td class="table-col-value" th:text="${error}"></td>
+            </tr>
+            <!--/*@thymesVar id="status" type="java.lang.String"*/-->
+            <tr>
+                <td class="table-col-name" th:text="#{status}"></td>
+                <td class="table-col-value" th:text="${status}"></td>
+            </tr>
+            <!--/*@thymesVar id="message" type="java.lang.String"*/-->
+            <tr>
+                <td class="table-col-name" th:text="#{message}"></td>
+                <td class="table-col-value" th:text="${message}"></td>
+            </tr>
+            <!--/*@thymesVar id="exception" type="java.lang.String"*/-->
+            <tr th:if="${exception}">
+                <td class="table-col-name" th:text="#{exception}"></td>
+                <td class="table-col-value" th:text="${exception}"></td>
+            </tr>
+        </table>
+
+        <h4>
+            <a id="goBack" class="btn btn-primary btn-lg btn-block btn-raised"
+               th:href="${#mvc.url('BC#renderIndexPage').build()}">
+                <th:block th:text="#{go.back}" />
+            </a>
+        </h4>
+    </div>
+</div>
+
+<div th:replace="~{footer/_footer :: footer(isError=true, isPrivate=false)}"></div>
+
+</body>
+</html>

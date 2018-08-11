@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{header/_header :: html-header(title=${#messages.msg('app.sub.page.title', #messages.msg('paypalm.title'), #strings.capitalize(#messages.msg('account.label')))})}">
+</head>
+<body>
+<!--/*@thymesVar id="currency" type="java.util.Currency"*/-->
+<!--/*@thymesVar id="totalAmount" type="java.lang.Double"*/-->
+<!--/*@thymesVar id="product" type="com.shimkiv.paypalm.model.dto.product.Product"*/-->
+<!--/*@thymesVar id="orderList" type="java.util.List<com.shimkiv.paypalm.model.dto.order.Order>"*/-->
+
+<div class="container">
+    <div th:replace="~{utils/_utils :: navigation}"></div>
+
+    <div class="well infobox content-container table-responsive">
+        <div th:replace="~{utils/_utils :: account-header(name=#{statistics.label})}"></div>
+
+        <th:block th:if="${product != null && not #lists.isEmpty(orderList)}">
+            <br />
+            <br />
+            <br />
+            <h3><i>&ldquo;<th:block th:text="${product.name}" />&rdquo;</i>&nbsp;<th:block th:text="#{related.orders.label}" /></h3>
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th th:text="#{statistics.form.id.label}"></th>
+                    <th th:text="#{statistics.form.products.label}"></th>
+                    <th th:text="#{statistics.form.date.time.label}"></th>
+                    <th th:text="#{statistics.form.pay.pal.id.label}"></th>
+                    <th th:text="#{statistics.form.card.type.label}"></th>
+                    <th th:text="#{statistics.form.card.number.label}"></th>
+                    <th th:text="#{statistics.form.amount.label}"></th>
+                    <th th:text="#{statistics.form.status.label}"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${orderList}" th:class="${order.status == 'approved'} ? 'success' : 'danger'">
+                    <td th:text="${@commonUtils.generateUniqueRef(order.id)}"></td>
+                    <td>
+                        <th:block th:each="productItem : ${order.productList}">
+                            <th:block th:text="${productItem.name}" />
+                            <br />
+                        </th:block>
+                    </td>
+                    <td th:text="${#calendars.format(order.creationDate)}"></td>
+                    <td>
+                        <th:block th:if="${not #strings.isEmpty(order.link)}">
+                            <a th:href="${order.link}" th:title="#{statistics.form.navigate.to.pay.pal.label}" target="_blank"><th:block th:text="${order.paypalId}" /></a>
+                        </th:block>
+                        <th:block th:if="${#strings.isEmpty(order.link)}">
+                            <th:block th:if="${#strings.isEmpty(order.paypalId)}">
+                                <th:block th:text="#{not.available}" />
+                            </th:block>
+                            <th:block th:if="${not #strings.isEmpty(order.paypalId)}">
+                                <th:block th:text="${order.paypalId}" />
+                            </th:block>
+                        </th:block>
+                    </td>
+                    <td th:text="${#strings.toUpperCase(order.cardType)}"></td>
+                    <td th:text="${@commonUtils.decryptAndMask(order.cardNumber)}"></td>
+                    <td th:text="${currency.symbol + ' ' + #numbers.formatDecimal(order.amount, 1, currency.defaultFractionDigits)}"></td>
+                    <td><b th:text="${#strings.toUpperCase(order.status)}"></b></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div th:replace="~{utils/_utils :: account-list-summary(totalSelectedLabel=#{total.orders.label}, totalSelectedCount=${orderList.size()}, totalAmount=${totalAmount})}"></div>
+        </th:block>
+
+        <th:block th:if="${product == null || #lists.isEmpty(orderList)}">
+            <div th:replace="~{utils/_utils :: account-empty-list(description=#{statistics.form.no.data.label})}"></div>
+        </th:block>
+
+        <div th:replace="~{utils/_utils :: account-return-back}"></div>
+    </div>
+</div>
+
+<div th:replace="~{utils/_utils :: settings-dialog}"></div>
+
+<div th:replace="~{footer/_footer :: footer(isError=false, isPrivate=true)}"></div>
+
+</body>
+</html>

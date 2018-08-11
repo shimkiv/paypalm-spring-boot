@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+
+<th:block th:fragment="footer(isError, isPrivate)">
+    <footer class="centered-text footer">
+        <hr />
+        <p><th:block th:text="#{copyright}" /> &copy; <th:block th:text="#{app.authors}" /></p>
+    </footer>
+
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootstrap-material-design/bootstrap-material-design.min.js}"></script>
+    <script th:src="@{/js/ripples/ripples.min.js}"></script>
+    <script th:src="@{/js/common.js}"></script>
+
+    <th:block th:if="${#bools.isFalse(isError)}">
+        <script th:src="@{/js/loader/loadingoverlay.min.js}"></script>
+        <script th:src="@{/js/ajax/ajax.js}"></script>
+
+        <script th:if="${#bools.isTrue(isPrivate)}" th:src="@{/js/private/app.js}"></script>
+    </th:block>
+</th:block>
+
+</body>
+</html>

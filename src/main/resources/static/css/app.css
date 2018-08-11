@@ -1,0 +1,64 @@
+body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f4f4f4;
+}
+
+.form-signin,
+.form-checkout {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.content-container {
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.form-signin,
+.form-checkout,
+.form-signin-heading,
+.content-container,
+.checkbox {
+    margin-bottom: 10px;
+}
+
+.form-signin,
+.form-checkout,
+.content-container,
+.checkbox {
+    font-weight: normal;
+}
+
+.form-signin,
+.form-checkout,
+.content-container,
+.form-control {
+    position: relative;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.centered-text {
+    text-align: center;
+}
+
+.footer {
+    padding-top: 20px;
+}
+
+.table-col-name {
+    width: 50%;
+    text-align: right;
+}
+.table-col-value {
+    width: 50%;
+    text-align: left;
+}
+
+.exception {
+    text-align: left;
+    white-space: pre-wrap;
+}
