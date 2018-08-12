@@ -14,6 +14,7 @@
 package com.shimkiv.paypalm.service.paypal
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.shimkiv.paypalm.model.cart.ShoppingCart
 import com.shimkiv.paypalm.model.dto.order.Order
 import com.shimkiv.paypalm.model.dto.user.User
@@ -178,11 +179,20 @@ class PaypalService(
                 }
         } catch (httpException: HttpStatusCodeException) {
             PaymentResponse(
-                errorResponse = ErrorResponse(
-                    message = httpException
-                        .statusCode
-                        .reasonPhrase
-                )
+                errorResponse = when {
+                    httpException.responseBodyAsString.isNotBlank() ->
+                        ObjectMapper()
+                            .readValue(
+                                httpException
+                                    .responseBodyAsString
+                            )
+                    else ->
+                        ErrorResponse(
+                            message = httpException
+                                .statusCode
+                                .reasonPhrase
+                        )
+                }
             )
         } catch (e: Exception) {
             PaymentResponse()

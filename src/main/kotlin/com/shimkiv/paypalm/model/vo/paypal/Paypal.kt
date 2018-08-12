@@ -13,6 +13,7 @@
 
 package com.shimkiv.paypalm.model.vo.paypal
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.shimkiv.paypalm.model.enums.PaymentResponseState
 import org.springframework.boot.web.client.RestTemplateBuilder
@@ -56,22 +57,24 @@ data class Amount(
     }
 }
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class ErrorDetail(
-    val field: String,
-    val issue: String
+    val field: String? = null,
+    val issue: String? = null
 ) : Serializable {
     companion object {
         private const val serialVersionUID: Long = 1L
     }
 }
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class ErrorResponse(
     val name: String? = null,
     val message: String? = null,
     @field:JsonProperty("information_link")
     val informationLink: String? = null,
     @field:JsonProperty("details")
-    val errorDetails: List<ErrorDetail>? = listOf()
+    val details: List<ErrorDetail>? = listOf()
 ) : Serializable {
     companion object {
         private const val serialVersionUID: Long = 1L
