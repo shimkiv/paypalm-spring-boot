@@ -4,6 +4,7 @@
 </head>
 <body>
 <!--/*@thymesVar id="currency" type="java.util.Currency"*/-->
+<!--/*@thymesVar id="user" type="com.shimkiv.paypalm.model.dto.user.User"*/-->
 <!--/*@thymesVar id="shoppingCart" type="com.shimkiv.paypalm.model.cart.ShoppingCart"*/-->
 <!--/*@thymesVar id="paymentForm" type="com.shimkiv.paypalm.model.vo.form.PaymentForm"*/-->
 
@@ -78,7 +79,7 @@
                     </div>
                     <div class="form-group label-floating">
                         <label class="control-label" for="cardHolderName" th:text="#{checkout.form.name.label}"></label>
-                        <input type="text" id="cardHolderName" name="cardHolderName" class="form-control" maxlength="50" required />
+                        <input type="text" id="cardHolderName" name="cardHolderName" class="form-control" maxlength="50" th:value="${not #strings.isEmpty(user.userSettings.firstName) && not #strings.isEmpty(user.userSettings.lastName)} ? ${user.userSettings.firstName + ' ' + user.userSettings.lastName} : ''" required />
                         <p class="help-block" th:text="#{checkout.form.name.help.label}"></p>
                     </div>
                 </div>

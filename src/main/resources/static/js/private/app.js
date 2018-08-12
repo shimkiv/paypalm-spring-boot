@@ -68,22 +68,36 @@ $(function() {
                     color = "red";
                 }
 
-                if (json.state !== undefined) {
+                if (json.state) {
                     text = json.state;
                 }
 
                 // noinspection JSUnresolvedVariable
-                if (json.errorResponse !== undefined &&
-                    json.errorResponse != null &&
-                    json.errorResponse.message != null) {
-                    // noinspection JSUnresolvedVariable
-                    message = '<p style="color: gray; font-size: 15px;">' + json.errorResponse.message + '</p>';
+                if (json.errorResponse &&
+                    json.errorResponse.message) {
+                    message = '<p class="error-message">' + json.errorResponse.message + '</p>';
+
+                    if (json.errorResponse.details) {
+                        message += '<p class="error-details">';
+
+                        $.each(json.errorResponse.details, function(index, value) {
+                            // noinspection JSUnresolvedVariable
+                            message += (index + 1) + '. ' + value.field + ': ' + value.issue + '<br />';
+                        });
+
+                        message += '</p>';
+                    }
                 }
             } else {
                 color = "red";
             }
 
-            paymentProcessingInfoId.append('<div class="centered-text"><h1 style="padding-bottom: 20px; color: ' + color + ';">' + text.toUpperCase() + '</h1>' + message + '</div>');
+            paymentProcessingInfoId.append(
+                '<div class="centered-text">' +
+                '<h1 style="padding-bottom: 20px; color: ' + color + ';">' + text.toUpperCase() + '</h1>' +
+                message +
+                '</div>'
+            );
             paymentProcDialog.modal("show");
         });
 
