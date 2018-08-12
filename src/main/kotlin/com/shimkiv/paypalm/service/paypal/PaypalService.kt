@@ -37,6 +37,7 @@ import org.springframework.security.crypto.encrypt.TextEncryptor
 import org.springframework.stereotype.Service
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.validation.BindingResult
+import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.client.exchange
 import java.text.NumberFormat
 import java.util.*
@@ -116,6 +117,12 @@ class PaypalService(
                                         it.links.first().href
                                     else -> null
                                 },
+                                message = when {
+                                    it.errorResponse?.message != null ->
+                                        it.errorResponse
+                                            .message
+                                    else -> null
+                                },
                                 productList = shoppingCart
                                     .products
                                     .toList()
@@ -169,6 +176,14 @@ class PaypalService(
                         return@let PaymentResponse()
                     }
                 }
+        } catch (httpException: HttpStatusCodeException) {
+            PaymentResponse(
+                errorResponse = ErrorResponse(
+                    message = httpException
+                        .statusCode
+                        .reasonPhrase
+                )
+            )
         } catch (e: Exception) {
             PaymentResponse()
         }

@@ -90,6 +90,7 @@ CREATE TABLE `orders` (
   amount DECIMAL (7,2) DEFAULT 0.00,
   status VARCHAR(20) DEFAULT NULL,
   link VARCHAR(256) DEFAULT NULL,
+  message VARCHAR(256) DEFAULT NULL,
 
   PRIMARY KEY (`id`),
   KEY `FK_USER_ID` (`user_id`),

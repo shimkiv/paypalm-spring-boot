@@ -66,12 +66,12 @@ data class ErrorDetail(
 }
 
 data class ErrorResponse(
-    val name: String,
-    val message: String,
+    val name: String? = null,
+    val message: String? = null,
     @field:JsonProperty("information_link")
-    val informationLink: String,
+    val informationLink: String? = null,
     @field:JsonProperty("details")
-    val errorDetails: List<ErrorDetail>
+    val errorDetails: List<ErrorDetail>? = listOf()
 ) : Serializable {
     companion object {
         private const val serialVersionUID: Long = 1L
@@ -121,7 +121,8 @@ data class PaymentRequest(
 data class PaymentResponse(
     val id: String? = null,
     val state: String = PaymentResponseState.FAILED.value,
-    val links: List<Link>? = listOf()
+    val links: List<Link>? = listOf(),
+    val errorResponse: ErrorResponse? = null
 ) : Serializable {
     companion object {
         private const val serialVersionUID: Long = 1L

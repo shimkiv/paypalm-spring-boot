@@ -59,6 +59,7 @@ $(function() {
         }).always(function(json, textStatus) {
             let color = "";
             let text = "error";
+            let message = "";
 
             if (textStatus === "success") {
                 if (json.state === "approved") {
@@ -70,11 +71,19 @@ $(function() {
                 if (json.state !== undefined) {
                     text = json.state;
                 }
+
+                // noinspection JSUnresolvedVariable
+                if (json.errorResponse !== undefined &&
+                    json.errorResponse != null &&
+                    json.errorResponse.message != null) {
+                    // noinspection JSUnresolvedVariable
+                    message = '<p style="color: gray; font-size: 15px;">' + json.errorResponse.message + '</p>';
+                }
             } else {
                 color = "red";
             }
 
-            paymentProcessingInfoId.append('<div class="centered-text"><h1 style="padding-bottom: 20px; color: ' + color + ';">' + text.toUpperCase() + '</h1></div>');
+            paymentProcessingInfoId.append('<div class="centered-text"><h1 style="padding-bottom: 20px; color: ' + color + ';">' + text.toUpperCase() + '</h1>' + message + '</div>');
             paymentProcDialog.modal("show");
         });
 

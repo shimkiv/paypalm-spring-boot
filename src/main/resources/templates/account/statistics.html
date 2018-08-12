@@ -33,7 +33,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="order : ${orderList}" th:class="${order.status == 'approved'} ? 'success' : 'danger'">
+                <tr th:each="order : ${orderList}" th:class="${order.status == 'approved'} ? 'success' : 'danger'" th:title="${order.message != null} ? ${order.message} : ''">
                     <td th:text="${@commonUtils.generateUniqueRef(order.id)}"></td>
                     <td>
                         <th:block th:each="productItem : ${order.productList}">

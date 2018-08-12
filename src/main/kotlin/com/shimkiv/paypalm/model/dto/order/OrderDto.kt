@@ -55,6 +55,8 @@ data class Order(
     @Column(name = "link")
     @field:Size(max = 256)
     val link: String?,
+    @field:Size(max = 256)
+    val message: String?,
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "order_products",
