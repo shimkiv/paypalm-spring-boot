@@ -25,6 +25,16 @@
 * Update ``PayPal`` user account settings
 * Profit !
 
+
+### Tests
+
+* In order to execute embedded Web UI tests first compile, build artifacts and run the application itself using the command provided above, then:
+    * ``mvn test`` ... to run tests using Chrome Web-driver 
+
+    or
+    
+    * ``mvn test -Dselenide.browser=firefox`` ... to run tests using Firefox (Gecko) Web-driver. Other supported values are: "chrome", "firefox", "legacy_firefox" (upto ESR 52), "ie", "opera", "edge". Note that browsers need to be installed separately.
+
 ### Notes ###
 
 * Please be aware that PayPal's "sandbox" is not stable and thus you can fall into the "timed out" issues.
