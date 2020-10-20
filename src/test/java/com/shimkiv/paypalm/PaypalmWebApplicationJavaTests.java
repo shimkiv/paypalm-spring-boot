@@ -2,6 +2,8 @@ package com.shimkiv.paypalm;
 
 import com.shimkiv.paypalm.pages.Login;
 import com.shimkiv.paypalm.pages.ProductCatalogue;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.BeforeSuite;
@@ -25,6 +27,8 @@ public class PaypalmWebApplicationJavaTests {
         Assert.assertTrue($(By.xpath("//i[contains(text(), 'Bender')]")).isDisplayed(), "Could not login");
     }
 
+    @Feature("Shopping Cart")
+    @Description("Check that product quantity and total price in Shopping Cart are updated correctly.")
     @Test
     public void productQuantityAndTotalsUpdateCorrectly() throws Exception {
         SoftAssert productQuantityAndTotal = new SoftAssert();
