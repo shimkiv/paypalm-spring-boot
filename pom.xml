@@ -92,7 +92,7 @@
         <dokka.version>0.9.17</dokka.version>
 
         <webjars-locator.version>0.36</webjars-locator.version>
-        <bootstrap.version>3.3.7-1</bootstrap.version>
+        <bootstrap.version>4.0.0</bootstrap.version>
         <jquery.version>3.3.1-1</jquery.version>
 
         <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
