@@ -1,0 +1,18 @@
+{
+  "name": "playwright-tests",
+  "version": "1.0.0",
+  "description": "Sample project for the technical test",
+  "dependencies": {
+    "@playwright/test": "^1.18.1",
+    "allure-commandline": "^2.17.2",
+    "allure-playwright": "^2.0.0-beta.15"
+  },
+  "scripts": {
+    "postinstall": "npx playwright install",
+    "test": "npx playwright test --reporter=line,allure-playwright --workers=1",
+    "headed": "npx playwright test --reporter=line,allure-playwright --headed --workers=1",
+    "allure-generate": "npx allure generate ./allure-results --clean",
+    "allure-show": "npx allure open ./allure-report"
+  },
+  "author": "Uladzimir Stsiatsko"
+}

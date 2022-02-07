@@ -23,3 +23,10 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+
+### Auto-generated Playwright test files ###
+/playwright-tests/allure-report
+/playwright-tests/allure-results
+/playwright-tests/application-state
+/playwright-tests/node_modules
+/playwright-tests/package-lock.json
